@@ -1,0 +1,42 @@
+[
+  {
+    "id": "seed-1",
+    "date": "2026-01-01",
+    "category": "N\u00f3mina",
+    "concept": "N\u00f3mina Enero",
+    "amount": 2500.0,
+    "account": "Trabajo"
+  },
+  {
+    "id": "seed-2",
+    "date": "2026-01-02",
+    "category": "Vivienda",
+    "concept": "Hipoteca/Alquiler",
+    "amount": -850.0,
+    "account": "Vivienda"
+  },
+  {
+    "id": "seed-3",
+    "date": "2026-01-03",
+    "category": "Alimentaci\u00f3n",
+    "concept": "Supermercado",
+    "amount": -150.0,
+    "account": "Alimentaci\u00f3n"
+  },
+  {
+    "id": "seed-4",
+    "date": "2026-01-05",
+    "category": "Ocio/Restaurantes",
+    "concept": "Restaurante Sniper",
+    "amount": -60.0,
+    "account": "Ocio"
+  },
+  {
+    "id": "seed-5",
+    "date": "2026-01-10",
+    "category": "Inversiones",
+    "concept": "Dividendos",
+    "amount": 120.0,
+    "account": "Inversiones"
+  }
+]
