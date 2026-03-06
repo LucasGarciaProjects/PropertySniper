@@ -1,0 +1,58 @@
+name: Replace with property-sniper-pro
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  replace:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Preserve files
+        run: |
+          mkdir _preserve
+          cp -f README.md _preserve/ || true
+          cp -f DEBUG_instructions.md _preserve/ || true
+
+      - name: Clean repository except .git and _preserve
+        shell: bash
+        run: |
+          shopt -s extglob dotglob
+          rm -rf !(.git|_preserve)
+
+      - name: Download external repo (Galpein/property-sniper-pro)
+        run: |
+          curl -L https://codeload.github.com/Galpein/property-sniper-pro/zip/refs/heads/main -o src.zip
+          unzip -q src.zip
+          SRC_DIR=$(ls -d property-sniper-pro-* | head -n1)
+          shopt -s dotglob
+          cp -R "$SRC_DIR"/* .
+          rm -rf "$SRC_DIR" src.zip
+
+      - name: Restore preserved files
+        run: |
+          cp -f _preserve/README.md ./ || true
+          cp -f _preserve/DEBUG_instructions.md ./ || true
+          rm -rf _preserve
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "Replace codebase with Galpein/property-sniper-pro, preserving README.md & DEBUG_instructions.md"
+          title: "Replace codebase with property-sniper-pro (preserving README & DEBUG)"
+          body: |
+            This PR replaces repository content with Galpein/property-sniper-pro.
+            Preserved files:
+            - README.md
+            - DEBUG_instructions.md
+
+            Review LICENSE and any CI adjustments.
+          branch: chore/replace-with-property-sniper-pro
