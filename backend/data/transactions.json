@@ -1,0 +1,50 @@
+[
+  {
+    "id": "seed-1",
+    "date": "2026-01-01",
+    "category": "Salary",
+    "concept": "January Salary",
+    "amount": 2500.0,
+    "account": "Work"
+  },
+  {
+    "id": "seed-2",
+    "date": "2026-01-02",
+    "category": "Housing",
+    "concept": "Mortgage/Rent",
+    "amount": -850.0,
+    "account": "Housing"
+  },
+  {
+    "id": "seed-3",
+    "date": "2026-01-03",
+    "category": "Food",
+    "concept": "Groceries",
+    "amount": -150.0,
+    "account": "Food"
+  },
+  {
+    "id": "seed-4",
+    "date": "2026-01-05",
+    "category": "Leisure/Restaurants",
+    "concept": "Sniper Restaurant",
+    "amount": -60.0,
+    "account": "Leisure"
+  },
+  {
+    "id": "seed-5",
+    "date": "2026-01-10",
+    "category": "Investments",
+    "concept": "Dividends",
+    "amount": 120.0,
+    "account": "Investments"
+  },
+  {
+    "id": "1f5951ba-1cfb-41d8-9133-26a0fd9cf3dc",
+    "date": "2026-03-04",
+    "category": "Food",
+    "concept": "Dinner",
+    "amount": -25.0,
+    "account": "Principal"
+  }
+]
