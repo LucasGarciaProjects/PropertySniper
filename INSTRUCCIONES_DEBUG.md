@@ -1,68 +1,94 @@
-# Instrucciones para Debug del Scraper
+# Scraper Debugging Instructions
 
-## Problema: No se puede extraer el precio
+## Issue: Price cannot be extracted
 
-Si estás viendo el error "No se pudieron extraer datos esenciales. Precio: None", sigue estos pasos:
+If you are seeing the error message **"Essential data could not be extracted. Price: None"**, follow these steps.
 
-### 1. Usar el endpoint de debug (Backend - Puerto 8000)
+---
 
-El endpoint de debug está en el **backend** (puerto 8000), NO en el frontend (puerto 8080).
+## 1. Use the debug endpoint (Backend – Port 8000)
 
-**Opción A: Desde la terminal:**
-```bash
+The debug endpoint runs on the **backend** (port **8000**), NOT on the frontend (port **8080**).
+
+### Option A: From the terminal
+
+```
 curl -X POST http://localhost:8000/debug/scrape \
   -H "Content-Type: application/json" \
-  -d '{"url": "TU_URL_DE_IDEALISTA_AQUI"}'
+  -d '{"url": "YOUR_IDEALISTA_URL_HERE"}'
 ```
 
-**Opción B: Desde el navegador (Swagger UI):**
-1. Abre: http://localhost:8000/docs
-2. Busca el endpoint `/debug/scrape`
-3. Haz clic en "Try it out"
-4. Pega tu URL de Idealista
-5. Haz clic en "Execute"
+### Option B: From the browser (Swagger UI)
 
-### 2. Interpretar los resultados
+1. Open: http://localhost:8000/docs
+2. Locate the endpoint `/debug/scrape`
+3. Click **"Try it out"**
+4. Paste your Idealista URL
+5. Click **"Execute"**
 
-El endpoint te mostrará:
-- `content_length`: Longitud del contenido de texto
-- `html_length`: Longitud del HTML
-- `content_preview`: Primeros 500 caracteres del contenido
-- `extracted_price`: Precio extraído (o null si no se encontró)
-- `extracted_m2`: Metros cuadrados extraídos
+---
 
-### 3. Problemas comunes
+## 2. Interpreting the results
 
-#### Problema: Captcha detectado
-**Síntoma:** El contenido contiene "captcha"
-**Solución:** 
-- Idealista está bloqueando el scraping
-- Espera unos minutos y vuelve a intentar
-- Prueba con una URL diferente
-- Considera usar un proxy o configuración diferente en Firecrawl
+The endpoint will return the following fields:
 
-#### Problema: Contenido muy corto
-**Síntoma:** `content_length` es menor a 100 caracteres
-**Solución:**
-- La página no se cargó correctamente
-- Verifica que la URL sea válida y accesible
-- Puede que requiera login o tenga protección
+* `content_length`: Length of the extracted text content
+* `html_length`: Length of the raw HTML
+* `content_preview`: First 500 characters of the extracted content
+* `extracted_price`: Extracted price (or `null` if not found)
+* `extracted_m2`: Extracted square meters
 
-#### Problema: Precio es null pero hay contenido
-**Síntoma:** `extracted_price` es null pero `content_length` es grande
-**Solución:**
-- El formato del precio en la página puede ser diferente
-- Revisa el `content_preview` para ver cómo aparece el precio
-- Puede necesitarse ajustar los patrones regex en `scraper.py`
+---
 
-### 4. Solución temporal: Entrada manual
+## 3. Common Issues
 
-Si el scraping no funciona, puedes modificar temporalmente el código para permitir entrada manual de datos mientras se soluciona el problema de scraping.
+### Issue: Captcha detected
 
-### 5. Contacto
+**Symptom:** The content includes the word **"captcha"**
 
-Si el problema persiste, comparte:
-- La URL que estás intentando analizar
-- El resultado del endpoint `/debug/scrape`
-- Cualquier mensaje de error adicional
+**Solution:**
 
+* Idealista is blocking the scraping request
+* Wait a few minutes and try again
+* Try using a different property URL
+* Consider using a proxy or a different configuration in Firecrawl
+
+---
+
+### Issue: Content too short
+
+**Symptom:** `content_length` is less than **100 characters**
+
+**Solution:**
+
+* The page may not have loaded correctly
+* Verify that the URL is valid and accessible
+* The page may require login or may be protected
+
+---
+
+### Issue: Price is null but content exists
+
+**Symptom:** `extracted_price` is `null` but `content_length` is large
+
+**Solution:**
+
+* The price format on the page may be different
+* Check the `content_preview` to see how the price appears
+* The regex patterns in `scraper.py` may need to be updated
+
+---
+
+## 4. Temporary workaround: Manual input
+
+If scraping fails, you can temporarily modify the code to allow **manual input of property data** while the scraping issue is being resolved.
+
+---
+
+## 5. Support
+
+If the issue persists, please provide:
+
+* The URL you are trying to analyze
+* The output from the `/debug/scrape` endpoint
+* Any additional error messages
