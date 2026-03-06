@@ -1,130 +1,213 @@
-# 💰 Libertad Wealth Management App & Sniper Inmobiliario
+# 💰 Libertad Wealth Management App & Real Estate Sniper
 
-Este proyecto es una aplicación integral de gestión patrimonial ("Wealth Management") que combina el control de finanzas personales con herramientas avanzadas de análisis de inversión inmobiliaria ("Sniper Inmobiliario").
+This project is a comprehensive **Wealth Management application** that combines personal finance tracking with advanced **real estate investment analysis tools** ("Real Estate Sniper").
 
-**Objetivo**: Centralizar tu salud financiera, controlar tus ingresos/gastos y analizar nuevas oportunidades de inversión desde una única interfaz moderna.
-
----
-
-## 🏗 Arquitectura del Proyecto
-
-El proyecto está dividido en dos partes principales:
-
-### 1. Backend (API)
-- **Tecnología**: Python con FastAPI.
-- **Ubicación**: Carpeta `backend/`.
-- **Responsabilidad**:
-    - Gestionar la lógica de negocio financiera.
-    - Persistencia de datos (Transacciones y Activos).
-    - Scraping y análisis inmobiliario.
-    - Integración con IA (OpenAI) para el Coach Financiero.
-- **Datos**: Utiliza un sistema de persistencia ligera basado en archivos JSON (`data/transactions.json`, `data/assets.json`) para facilitar el despliegue local sin bases de datos complejas.
-
-### 2. Frontend (Interfaz de Usuario)
-- **Tecnología**: React + Vite + TypeScript + Tailwind CSS.
-- **Ubicación**: Carpeta `frontend/`.
-- **Responsabilidad**:
-    - Interfaz de usuario moderna y responsiva (Estilo Apple/Revolut).
-    - Visualización de datos (Gráficos, KPIs).
-    - Interacción con el usuario (Formularios, Chat, Navegación).
+**Objective:** Centralize your financial health, track income and expenses, and evaluate new investment opportunities from a single modern interface.
 
 ---
 
-## 🚀 Funcionalidades Clave
+# 🏗 Project Architecture
 
-### A. 📊 Dashboard Financiero
-Resumen visual de tu salud financiera en tiempo real.
-- **KPIs**: Ingresos Totales, Gastos Totales, Tasa de Ahorro.
-- **Gráficos**: Comparativa mensual de Ingresos vs. Gastos.
-- **Cálculo automático**: Se actualiza al añadir nuevos movimientos.
+The project is divided into two main components:
 
-### B. 📒 Libro de Registro
-Gestión detallada de tu flujo de caja.
-- **Registro de Movimientos**: Ingresos y Gastos categorizados.
-- **Categorías Oficiales**: Nómina, Alquileres, Vivienda, Ocio, etc.
-- **Historial**: Visualización limpia de todas las transacciones.
+## 1. Backend (API)
 
-### C. 🎯 Sniper Inmobiliario
-Herramienta de análisis de inversión basada en el método "Libertad Inmobiliaria".
-- **Analizador**: Pega una URL (Idealista/Fotocasa) o texto para analizar una propiedad.
-- **Métricas**: Calcula Rentabilidad Neta, Cashflow y Oferta Máxima Recomendada (OMR).
-- **Integración**: Botón **"Añadir a mis proyecciones"** para guardar la propiedad como un activo en tu balance.
-- **Generador de PDF**: Crea informes detallados de cada análisis.
+- **Technology:** Python with FastAPI  
+- **Location:** `backend/` folder  
 
-### D. 🤖 AI Financial Coach
-Tu asesor financiero personal disponible 24/7.
-- **Chat Inteligente**: Interfaz de mensajería integrada.
-- **Contexto Real**: La IA "lee" tus datos financieros antes de responder (sabe cuánto has gastado, ahorrado, etc.).
-- **Motor**: Conectado a OpenAI (GPT-4o-mini).
+**Responsibilities:**
+
+- Financial business logic management  
+- Data persistence (transactions and assets)  
+- Real estate scraping and analysis  
+- AI integration (OpenAI) for the Financial Coach  
+
+**Data Storage**
+
+The system uses a lightweight JSON-based persistence approach to simplify local deployment without requiring complex databases.
+
+data/transactions.json
+data/assets.json
+
 
 ---
 
-## 📂 Estructura de Archivos
+## 2. Frontend (User Interface)
 
-```
+- **Technology:** React + Vite + TypeScript + Tailwind CSS  
+- **Location:** `frontend/` folder  
+
+**Responsibilities:**
+
+- Modern and responsive UI (Apple / Revolut-inspired design)  
+- Financial data visualization (charts and KPIs)  
+- User interaction (forms, chat interface, navigation)
+
+---
+
+# 🚀 Key Features
+
+## 📊 Financial Dashboard
+
+A visual summary of your financial health in real time.
+
+Features:
+
+- **KPIs:** Total Income, Total Expenses, Savings Rate  
+- **Charts:** Monthly comparison of income vs expenses  
+- **Automatic updates** when new transactions are added
+
+---
+
+## 📒 Transaction Log
+
+Detailed management of your cash flow.
+
+Features:
+
+- Register **income and categorized expenses**  
+- Standard financial categories (Salary, Rent, Housing, Leisure, etc.)  
+- Clean and structured **transaction history**
+
+---
+
+## 🎯 Real Estate Sniper
+
+An investment analysis tool based on the **"Libertad Inmobiliaria" methodology**.
+
+Features:
+
+- **Property Analyzer**
+  - Paste a property URL (Idealista / Fotocasa) or raw text
+  - Automatically extract property data
+
+- **Investment Metrics**
+  - Net Yield
+  - Cashflow estimation
+  - Recommended Maximum Offer (RMO)
+
+- **Integration with Portfolio**
+  - Button **"Add to my projections"** to save the property as an asset
+
+- **PDF Report Generator**
+  - Creates detailed analysis reports for each property
+
+---
+
+## 🤖 AI Financial Coach
+
+Your personal financial advisor available **24/7**.
+
+Features:
+
+- Integrated **chat interface**
+- AI responses based on **your real financial data**
+- Understands:
+  - expenses
+  - savings
+  - income
+  - financial balance
+
+**AI Engine:** OpenAI (GPT-4o-mini)
+
+---
+
+# 📂 Project Structure
+
 sniper-inmobiliario/
-├── backend/                   # Servidor API
-│   ├── main.py               # Punto de entrada y endpoints API
-│   ├── finance_service.py    # Lógica de gestión financiera (NUEVO)
-│   ├── scraper.py            # Lógica de scraping inmobiliario
-│   ├── calculator.py         # Cálculos de rentabilidad
-│   ├── models.py             # Modelos de datos Pydantic
-│   ├── llm_extractor.py      # Extracción de datos con IA
-│   └── reports/              # PDFs generados
+├── backend/ # API Server
+│ ├── main.py # Entry point and API endpoints
+│ ├── finance_service.py # Financial management logic
+│ ├── scraper.py # Real estate scraping logic
+│ ├── calculator.py # Investment profitability calculations
+│ ├── models.py # Pydantic data models
+│ ├── llm_extractor.py # AI-based data extraction
+│ └── reports/ # Generated PDF reports
 │
-├── frontend/                  # Cliente Web
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── WealthDashboard.tsx  # Componente Dashboard (NUEVO)
-│   │   │   ├── ExpenseLog.tsx       # Componente Registro (NUEVO)
-│   │   │   ├── SniperSection.tsx    # Componente Sniper (NUEVO)
-│   │   │   ├── AICoach.tsx          # Componente Chat IA (NUEVO)
-│   │   │   └── ...
-│   │   ├── pages/
-│   │   │   └── Index.tsx            # Página principal con Tabs
-│   │   └── services/
-│   │       └── api.ts               # Cliente HTTP para conectar con Backend
+├── frontend/ # Web client
+│ ├── src/
+│ │ ├── components/
+│ │ │ ├── WealthDashboard.tsx
+│ │ │ ├── ExpenseLog.tsx
+│ │ │ ├── SniperSection.tsx
+│ │ │ ├── AICoach.tsx
+│ │ │ └── ...
+│ │ ├── pages/
+│ │ │ └── Index.tsx
+│ │ └── services/
+│ │ └── api.ts
 │
-├── data/                      # Base de Datos Local (JSON)
-│   ├── transactions.json     # Historial de ingresos/gastos
-│   └── assets.json           # Activos inmobiliarios guardados
+├── data/ # Local JSON database
+│ ├── transactions.json # Income/expense history
+│ └── assets.json # Saved real estate assets
 │
-└── PROJECT_OVERVIEW.md        # Este archivo
-```
+└── PROJECT_OVERVIEW.md
 
 ---
 
-## 🛠 Instrucciones de Ejecución
+# 🛠 Running the Project
 
-Para levantar el proyecto completo, necesitas dos terminales:
+To run the full application you need **two terminals**.
 
-### Terminal 1: Backend
+---
+
+## Terminal 1 — Backend
+
 ```bash
 cd backend
-source venv/bin/activate  # O venv\Scripts\activate en Windows
-# Instalar dependencias si es la primera vez: pip install -r requirements.txt
+source venv/bin/activate  # or venv\Scripts\activate on Windows
+```
+
+# Install dependencies (first time only)
+```bash
+pip install -r requirements.txt
+
 python main.py
 ```
-*El backend correrá en `http://localhost:8000`*
 
-### Terminal 2: Frontend
+
+The backend will run at:
+
+```bash
+http://localhost:8000
+```
+
+Terminal 2 — Frontend
 ```bash
 cd frontend
-# Instalar dependencias si es la primera vez: npm install
+```
+
+# Install dependencies (first time only)
+```bash
+npm install
+
 npm run dev
 ```
-*El frontend correrá en `http://localhost:8081` (o similar)*
 
----
+The frontend will run at:
 
-## 🔄 Flujo de Trabajo Típico
+```bash
+http://localhost:8081
+```
 
-1.  **Registrar**: Añades tu nómina y gastos del mes en la pestaña "Registro".
-2.  **Monitorizar**: Vas al "Dashboard" para ver cómo afecta a tu tasa de ahorro.
-3.  **Analizar**: Ves un piso en Idealista, pegas la URL en "Sniper".
-4.  **Proyectar**: Si es rentable, lo guardas en tus proyecciones.
-5.  **Consultar**: Preguntas al "Coach" si deberías comprarlo basándote en tus ahorros actuales.
+(or a similar port depending on Vite)
 
----
+## Typical Workflow
 
-**Última actualización**: 2026-01-14 (Transformación a Wealth Management App)
+### Register transactions
+Add your salary and monthly expenses in the Transaction Log tab.
+
+### Monitor your finances
+Go to the Dashboard to track your savings rate.
+
+### Analyze a property
+Find a property on Idealista and paste the URL into Real Estate Sniper.
+
+### Evaluate the investment
+Review the calculated profitability metrics.
+
+### Add to projections
+If the investment looks promising, add it to your portfolio.
+
+### Consult the AI Coach
+Ask the assistant whether the investment makes sense based on your current finances.
