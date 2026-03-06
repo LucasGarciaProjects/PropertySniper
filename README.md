@@ -142,7 +142,8 @@ sniper-inmobiliario/
 │ ├── transactions.json # Income/expense history
 │ └── assets.json # Saved real estate assets
 │
-└── README.md
+├── README.md
+└── DEBUG_instructions.md
 ```
 
 
