@@ -2,6 +2,7 @@ import { MessageSquare, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface NegotiationScriptProps {
   script: string;
@@ -9,12 +10,13 @@ interface NegotiationScriptProps {
 }
 
 const NegotiationScript = ({ script, puntoDebiles }: NegotiationScriptProps) => {
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(script);
     setCopied(true);
-    toast.success("Guion copiado al portapapeles");
+    toast.success(t.sniper.multiInput.results.negotiationScript.toast);
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -31,8 +33,8 @@ const NegotiationScript = ({ script, puntoDebiles }: NegotiationScriptProps) => 
                 <MessageSquare className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-foreground">Guion de Negociación</h3>
-                <p className="text-sm text-muted-foreground">Basado en puntos débiles detectados</p>
+                <h3 className="text-lg font-semibold text-foreground">{t.sniper.multiInput.results.negotiationScript.title}</h3>
+                <p className="text-sm text-muted-foreground">{t.sniper.multiInput.results.negotiationScript.subtitle}</p>
               </div>
             </div>
             <Button
@@ -44,12 +46,12 @@ const NegotiationScript = ({ script, puntoDebiles }: NegotiationScriptProps) => 
               {copied ? (
                 <>
                   <Check className="w-4 h-4 text-accent" />
-                  Copiado
+                  {t.sniper.multiInput.results.negotiationScript.copied}
                 </>
               ) : (
                 <>
                   <Copy className="w-4 h-4" />
-                  Copiar
+                  {t.sniper.multiInput.results.negotiationScript.copy}
                 </>
               )}
             </Button>

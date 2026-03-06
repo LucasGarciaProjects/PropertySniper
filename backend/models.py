@@ -63,7 +63,7 @@ class RentabilityAnalysis(BaseModel):
     gastos_fijos_anuales: float
     beneficio_neto_anual: float
     rentabilidad_neta: float
-    semaforo: str  # "VERDE", "AMARILLO", "ROJO"
+    semaforo: str  # "GREEN", "YELLOW", "RED"
     omr: float  # Oferta Máxima Recomendada (precio para 8% rentabilidad)
     property_data: PropertyData
 

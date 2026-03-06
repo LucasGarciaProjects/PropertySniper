@@ -2,65 +2,49 @@
   {
     "id": "seed-1",
     "date": "2026-01-01",
-    "category": "N\u00f3mina",
-    "concept": "N\u00f3mina Enero",
+    "category": "Salary",
+    "concept": "January Salary",
     "amount": 2500.0,
-    "account": "Trabajo"
+    "account": "Work"
   },
   {
     "id": "seed-2",
     "date": "2026-01-02",
-    "category": "Vivienda",
-    "concept": "Hipoteca/Alquiler",
+    "category": "Housing",
+    "concept": "Mortgage/Rent",
     "amount": -850.0,
-    "account": "Vivienda"
+    "account": "Housing"
   },
   {
     "id": "seed-3",
     "date": "2026-01-03",
-    "category": "Alimentaci\u00f3n",
-    "concept": "Supermercado",
+    "category": "Food",
+    "concept": "Groceries",
     "amount": -150.0,
-    "account": "Alimentaci\u00f3n"
+    "account": "Food"
   },
   {
     "id": "seed-4",
     "date": "2026-01-05",
-    "category": "Ocio/Restaurantes",
-    "concept": "Restaurante Sniper",
+    "category": "Leisure/Restaurants",
+    "concept": "Sniper Restaurant",
     "amount": -60.0,
-    "account": "Ocio"
+    "account": "Leisure"
   },
   {
     "id": "seed-5",
     "date": "2026-01-10",
-    "category": "Inversiones",
-    "concept": "Dividendos",
+    "category": "Investments",
+    "concept": "Dividends",
     "amount": 120.0,
-    "account": "Inversiones"
+    "account": "Investments"
   },
   {
-    "id": "3fb6f689-2390-44ac-99ba-621d775a7743",
-    "date": "2025-12-21",
-    "category": "Alimentaci\u00f3n",
-    "concept": "Cena Navidad",
-    "amount": -382.29,
-    "account": "Principal"
-  },
-  {
-    "id": "34edaa61-18f9-488a-b726-94fd4952539f",
-    "date": "2025-12-01",
-    "category": "N\u00f3mina",
-    "concept": "Paga extra Diciembre",
-    "amount": 1800.0,
-    "account": "Principal"
-  },
-  {
-    "id": "e55dc89a-deea-40a1-b47e-69f3f2d209db",
-    "date": "2026-01-12",
-    "category": "Alimentaci\u00f3n",
-    "concept": "Comida",
-    "amount": -12.0,
+    "id": "1f5951ba-1cfb-41d8-9133-26a0fd9cf3dc",
+    "date": "2026-03-04",
+    "category": "Food",
+    "concept": "Dinner",
+    "amount": -25.0,
     "account": "Principal"
   }
 ]

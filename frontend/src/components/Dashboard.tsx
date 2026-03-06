@@ -4,6 +4,7 @@ import GaugeChart from "./GaugeChart";
 import ResultCard from "./ResultCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface DashboardProps {
   data: {
@@ -21,6 +22,7 @@ interface DashboardProps {
 }
 
 const Dashboard = ({ data, onAlquilerChange }: DashboardProps) => {
+  const { t } = useLanguage();
   const descuento = ((data.precioOriginal - data.ofertaMaxima) / data.precioOriginal * 100).toFixed(1);
   const [isEditingAlquiler, setIsEditingAlquiler] = useState(false);
   const [tempAlquiler, setTempAlquiler] = useState(data.alquilerMensual.toString());
@@ -44,7 +46,7 @@ const Dashboard = ({ data, onAlquilerChange }: DashboardProps) => {
   };
 
   const formatEuro = (value: number) => {
-    return Math.round(value).toLocaleString('es-ES') + ' €';
+    return Math.round(value).toLocaleString('en-US') + ' €';
   };
 
   return (
@@ -52,22 +54,22 @@ const Dashboard = ({ data, onAlquilerChange }: DashboardProps) => {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Rentabilidad Neta */}
-          <ResultCard title="Rentabilidad Neta" delay={0}>
+          <ResultCard title={t.sniper.multiInput.results.netYield} delay={0}>
             <div className="flex flex-col items-center">
               <GaugeChart 
                 value={data.rentabilidadNeta} 
                 maxValue={15}
-                label="Objetivo: 8%+"
+                label={t.sniper.multiInput.results.goal}
               />
               <div className="flex items-center gap-2 mt-4 text-accent">
                 <TrendingUp className="w-4 h-4" />
-                <span className="text-sm font-medium">Por encima de la media</span>
+                <span className="text-sm font-medium">{t.sniper.multiInput.results.aboveAverage}</span>
               </div>
             </div>
           </ResultCard>
 
           {/* Alquiler Estimado - Editable */}
-          <ResultCard title="Alquiler Estimado" delay={100}>
+          <ResultCard title={t.sniper.multiInput.results.estimatedRent} delay={100}>
             <div className="flex flex-col items-center justify-center h-full min-h-[160px]">
               {!isEditingAlquiler ? (
                 <>
@@ -75,7 +77,7 @@ const Dashboard = ({ data, onAlquilerChange }: DashboardProps) => {
                     <div className="flex items-center gap-2">
                       <Home className="w-6 h-6 text-accent" />
                       <span className="text-sm font-medium text-muted-foreground">
-                        Alquiler Estimado:
+                        {t.sniper.multiInput.results.estimatedRent}:
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -85,7 +87,7 @@ const Dashboard = ({ data, onAlquilerChange }: DashboardProps) => {
                       <button
                         onClick={() => setIsEditingAlquiler(true)}
                         className="p-1.5 hover:bg-muted rounded transition-colors"
-                        title="Editar alquiler"
+                        title={t.sniper.multiInput.results.editRent}
                       >
                         <Pencil className="w-4 h-4 text-muted-foreground hover:text-foreground" />
                       </button>
@@ -116,7 +118,7 @@ const Dashboard = ({ data, onAlquilerChange }: DashboardProps) => {
                       className="bg-accent hover:bg-accent/90"
                     >
                       <Check className="w-4 h-4 mr-1" />
-                      Aplicar
+                      {t.sniper.multiInput.results.apply}
                     </Button>
                     <Button
                       size="sm"
@@ -124,7 +126,7 @@ const Dashboard = ({ data, onAlquilerChange }: DashboardProps) => {
                       onClick={handleAlquilerCancel}
                     >
                       <X className="w-4 h-4 mr-1" />
-                      Cancelar
+                      {t.sniper.multiInput.results.cancel}
                     </Button>
                   </div>
                 </div>
@@ -133,12 +135,12 @@ const Dashboard = ({ data, onAlquilerChange }: DashboardProps) => {
           </ResultCard>
 
           {/* Cashflow Mensual */}
-          <ResultCard title="Cashflow Mensual" delay={150}>
+          <ResultCard title={t.sniper.multiInput.results.monthlyCashflow} delay={150}>
             <div className="flex flex-col items-center justify-center h-full min-h-[160px]">
               <div className="flex items-center gap-3 mb-2">
                 <Wallet className="w-8 h-8 text-accent" />
                 <span className="text-4xl sm:text-5xl font-bold text-foreground">
-                  {data.cashflowMensual > 0 ? '+' : ''}{Math.round(data.cashflowMensual).toLocaleString('es-ES')} €
+                  {data.cashflowMensual > 0 ? '+' : ''}{Math.round(data.cashflowMensual).toLocaleString('en-US')} €
                 </span>
               </div>
               <span className={cn(
@@ -147,13 +149,13 @@ const Dashboard = ({ data, onAlquilerChange }: DashboardProps) => {
                   ? "bg-accent/10 text-accent" 
                   : "bg-destructive/10 text-destructive"
               )}>
-                {data.cashflowMensual > 0 ? 'Cashflow Positivo' : 'Cashflow Negativo'}
+                {data.cashflowMensual > 0 ? t.sniper.multiInput.results.positiveCashflow : t.sniper.multiInput.results.negativeCashflow}
               </span>
             </div>
           </ResultCard>
 
           {/* OMR */}
-          <ResultCard title="Oferta Máxima Recomendada" variant="gold" delay={250}>
+          <ResultCard title={t.sniper.multiInput.results.maxOffer} variant="gold" delay={250}>
             <div className="flex flex-col items-center justify-center h-full min-h-[160px]">
               <div className="flex items-center gap-3 mb-2">
                 <BadgeEuro className="w-8 h-8 text-gold" />
@@ -163,10 +165,10 @@ const Dashboard = ({ data, onAlquilerChange }: DashboardProps) => {
               </div>
               <div className="flex flex-col items-center gap-1">
                 <span className="text-sm text-muted-foreground line-through">
-                  Precio actual: {formatEuro(data.precioOriginal)}
+                  {t.sniper.multiInput.results.currentPrice}: {formatEuro(data.precioOriginal)}
                 </span>
                 <span className="text-sm font-semibold text-gold">
-                  Descuento del {descuento}%
+                  {t.sniper.multiInput.results.discount} {descuento}%
                 </span>
               </div>
             </div>

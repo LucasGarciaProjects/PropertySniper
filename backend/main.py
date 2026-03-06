@@ -20,7 +20,7 @@ load_dotenv()
 
 app = FastAPI(
     title="Libertad Sniper AI API",
-    description="API para análisis de rentabilidad inmobiliaria usando el método de Libertad Inmobiliaria de Carlos Galán",
+    description="API for real estate rentability analysis using the Property Liberty method by Carlos Galán",
     version="1.0.0"
 )
 
@@ -137,7 +137,7 @@ async def analyze_property(request: PropertyAnalysisRequest):
         if "idealista" not in url_str.lower() and "fotocasa" not in url_str.lower():
             return AnalysisResponse(
                 success=False,
-                error="La URL debe ser de Idealista o Fotocasa"
+                error="URL must be from Idealista or Fotocasa"
             )
         
         # 1. Scrapear la propiedad
@@ -158,12 +158,12 @@ async def analyze_property(request: PropertyAnalysisRequest):
     except ValueError as e:
         return AnalysisResponse(
             success=False,
-            error=f"Error de validación: {str(e)}"
+            error=f"Validation error: {str(e)}"
         )
     except Exception as e:
         return AnalysisResponse(
             success=False,
-            error=f"Error al procesar la propiedad: {str(e)}"
+            error=f"Error processing property: {str(e)}"
         )
 
 
@@ -182,14 +182,14 @@ async def analyze_from_text(request: TextAnalysisRequest):
     if not llm_extractor:
         return AnalysisResponse(
             success=False,
-            error="OpenAI API key no configurada. Por favor, configura OPENAI_API_KEY en el archivo .env"
+            error="OpenAI API key not configured. Please configure OPENAI_API_KEY in .env file"
         )
     
     # Validar que el texto no esté vacío
     if not request.text or not request.text.strip():
         return AnalysisResponse(
             success=False,
-            error="El texto está vacío. Por favor, pega el contenido del anuncio inmobiliario."
+            error="Text is empty. Please paste the real estate ad content."
         )
     
     try:
@@ -200,7 +200,7 @@ async def analyze_from_text(request: TextAnalysisRequest):
         if not extraction_log.is_complete:
             return AnalysisResponse(
                 success=False,
-                error="Análisis incompleto: faltan datos críticos (precio o metros cuadrados). Por favor, completa estos datos manualmente o pega un texto más completo.",
+                error="Incomplete analysis: critical data missing (price or m2). Please complete these fields manually or paste a more complete text.",
                 extraction_log=extraction_log
             )
         
@@ -211,14 +211,14 @@ async def analyze_from_text(request: TextAnalysisRequest):
         if extraction_log:
             # Calcular ratio de alquiler por m²
             ratio_alquiler = analysis.alquiler_mensual / property_data.m2 if property_data.m2 > 0 else 0
-            ubicacion_display = property_data.ubicacion or "zona no especificada"
+            ubicacion_display = property_data.ubicacion or "unspecified location"
             
             # Determinar si el alquiler fue estimado o encontrado
             alquiler_fue_estimado = "alquiler_mensual" in extraction_log.missing_fields or property_data.alquiler_mensual_estimado is None
             
             if alquiler_fue_estimado:
                 # Añadir información de estimación al razonamiento
-                alquiler_info = f"Alquiler mensual estimado en {analysis.alquiler_mensual:.0f} EUR basado en un ratio de {ratio_alquiler:.0f} EUR/m2 para la zona de {ubicacion_display}."
+                alquiler_info = f"Estimated monthly rent at {analysis.alquiler_mensual:.0f} EUR based on a ratio of {ratio_alquiler:.0f} EUR/m2 for the area of {ubicacion_display}."
                 if extraction_log.reasoning:
                     extraction_log.reasoning = alquiler_info + " " + extraction_log.reasoning
                 else:
@@ -229,7 +229,7 @@ async def analyze_from_text(request: TextAnalysisRequest):
             warnings = extraction_log.warnings or []
             
             if descuento_porcentaje > 50:
-                warnings.append("Precio de mercado muy superior al objetivo de rentabilidad del 8%. El descuento necesario es superior al 50%.")
+                warnings.append("Market price far exceeds the 8% yield target. Required discount is over 50%.")
                 extraction_log.warnings = warnings
         
         # 5. Generar PDF
@@ -250,17 +250,17 @@ async def analyze_from_text(request: TextAnalysisRequest):
     except ConnectionError as e:
         return AnalysisResponse(
             success=False,
-            error=f"Error de conexión: {str(e)}"
+            error=f"Connection error: {str(e)}"
         )
     except ValueError as e:
         return AnalysisResponse(
             success=False,
-            error=f"Error de validación: {str(e)}"
+            error=f"Validation error: {str(e)}"
         )
     except Exception as e:
         return AnalysisResponse(
             success=False,
-            error=f"Error al procesar el texto: {str(e)}"
+            error=f"Error processing text: {str(e)}"
         )
 
 
@@ -282,9 +282,9 @@ async def analyze_manual(request: ManualAnalysisRequest):
             m2=request.m2,
             habitaciones=request.habitaciones,
             planta=request.planta,
-            estado=request.estado or 'bueno',
-            ubicacion=request.ubicacion or 'No especificada',
-            url_origen="entrada_manual"
+            estado=request.estado or 'good',
+            ubicacion=request.ubicacion or 'Not specified',
+            url_origen="manual_entry"
         )
         
         # Si se proporciona coste de reforma o alquiler, necesitamos ajustar el calculador
@@ -305,11 +305,11 @@ async def analyze_manual(request: ManualAnalysisRequest):
             
             # Actualizar semáforo
             if analysis.rentabilidad_neta >= 7.0:
-                analysis.semaforo = "VERDE"
+                analysis.semaforo = "GREEN"
             elif analysis.rentabilidad_neta >= 5.0:
-                analysis.semaforo = "AMARILLO"
+                analysis.semaforo = "YELLOW"
             else:
-                analysis.semaforo = "ROJO"
+                analysis.semaforo = "RED"
         
         # Si se proporcionó alquiler mensual manual, recalcular todo
         if request.alquiler_mensual is not None:
@@ -321,11 +321,11 @@ async def analyze_manual(request: ManualAnalysisRequest):
             
             # Actualizar semáforo
             if analysis.rentabilidad_neta >= 7.0:
-                analysis.semaforo = "VERDE"
+                analysis.semaforo = "GREEN"
             elif analysis.rentabilidad_neta >= 5.0:
-                analysis.semaforo = "AMARILLO"
+                analysis.semaforo = "YELLOW"
             else:
-                analysis.semaforo = "ROJO"
+                analysis.semaforo = "RED"
             
             # Recalcular OMR con el nuevo alquiler (crear PropertyData temporal con alquiler actualizado)
             # Para OMR, necesitamos usar el alquiler proporcionado
@@ -354,12 +354,12 @@ async def analyze_manual(request: ManualAnalysisRequest):
     except ValueError as e:
         return AnalysisResponse(
             success=False,
-            error=f"Error de validación: {str(e)}"
+            error=f"Validation error: {str(e)}"
         )
     except Exception as e:
         return AnalysisResponse(
             success=False,
-            error=f"Error al procesar los datos: {str(e)}"
+            error=f"Error processing data: {str(e)}"
         )
 
 
@@ -380,8 +380,8 @@ async def recalculate_analysis(request: RecalculateRequest):
         temp_property = PropertyData(
             precio=request.precio_compra,
             m2=request.m2,
-            ubicacion=request.ubicacion or "No especificada",
-            url_origen="recalculado"
+            ubicacion=request.ubicacion or "Not specified",
+            url_origen="recalculated"
         )
         
         # Crear calculador con el alquiler personalizado
@@ -415,11 +415,11 @@ async def recalculate_analysis(request: RecalculateRequest):
         
         # Determinar semáforo
         if rentabilidad_neta >= 7.0:
-            semaforo = "VERDE"
+            semaforo = "GREEN"
         elif rentabilidad_neta >= 5.0:
-            semaforo = "AMARILLO"
+            semaforo = "YELLOW"
         else:
-            semaforo = "ROJO"
+            semaforo = "RED"
         
         # Calcular nueva OMR con el nuevo alquiler
         # OMR necesita recalcularse con el nuevo alquiler
@@ -457,7 +457,7 @@ async def recalculate_analysis(request: RecalculateRequest):
     except Exception as e:
         return AnalysisResponse(
             success=False,
-            error=f"Error al recalcular: {str(e)}"
+            error=f"Error recalculating: {str(e)}"
         )
 
 
@@ -475,7 +475,7 @@ async def download_pdf(filename: str):
     filepath = os.path.join("reports", filename)
     
     if not os.path.exists(filepath):
-        raise HTTPException(status_code=404, detail="PDF no encontrado")
+        raise HTTPException(status_code=404, detail="PDF not found")
     
     return FileResponse(
         filepath,
@@ -520,23 +520,24 @@ async def chat_with_coach(request: ChatRequest):
     transactions = finance_service.get_transactions()[:10] # Últimas 10
     
     context = f"""
-    Actúa como un asesor financiero personal experto y motivador. Tu objetivo es ayudar al usuario a mejorar su salud financiera.
+    Act as an expert and motivating personal financial advisor. Your goal is to help the user improve their financial health.
     
-    ESTADO FINANCIERO ACTUAL:
-    - Ingresos Totales: {summary.total_income:.2f}€
-    - Gastos Totales: {summary.total_expenses:.2f}€
-    - Balance Neto: {summary.balance:.2f}€
-    - Tasa de Ahorro: {summary.savings_rate:.1f}% (Objetivo recomendado: >20%)
+    CURRENT FINANCIAL STATUS:
+    - Total Income: {summary.total_income:.2f}€
+    - Total Expenses: {summary.total_expenses:.2f}€
+    - Net Balance: {summary.balance:.2f}€
+    - Savings Rate: {summary.savings_rate:.1f}% (Recommended target: >20%)
     
-    ÚLTIMOS MOVIMIENTOS:
+    LATEST TRANSACTIONS:
     {json.dumps([t.dict() for t in transactions], ensure_ascii=False, indent=2)}
     
-    INSTRUCCIONES:
-    1. Analiza los datos proporcionados para dar respuestas precisas.
-    2. Si el usuario pregunta "cómo voy", usa los KPIs anteriores.
-    3. Si detectas gastos altos en categorías como "Ocio" o "Restaurantes", sugiere moderación pero con empatía.
-    4. Mantén un tono profesional, minimalista y directo (estilo Revolut/Apple).
-    5. Respuestas cortas y accionables (máximo 3 párrafos).
+    INSTRUCTIONS:
+    1. Analyze the provided data to give precise answers.
+    2. If the user asks "how am I doing", use the KPIs above.
+    3. If you detect high spending in categories like "Leisure" or "Restaurants", suggest moderation but with empathy.
+    4. Maintain a professional, minimalist, and direct tone (Revolut/Apple style).
+    5. Short and actionable answers (maximum 3 paragraphs).
+    6. ALWAYS ANSWER IN ENGLISH.
     """
     
     try:

@@ -11,8 +11,8 @@ const ActionButton = ({ onDownloadPDF }: ActionButtonProps) => {
     if (onDownloadPDF) {
       onDownloadPDF();
     } else {
-      toast.info("El PDF se generará automáticamente después del análisis", {
-        description: "Espera a que se complete el análisis",
+      toast.info("The PDF will be generated automatically after the analysis", {
+        description: "Wait for the analysis to complete",
       });
     }
   };
@@ -30,12 +30,12 @@ const ActionButton = ({ onDownloadPDF }: ActionButtonProps) => {
             className="h-14 px-8 text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl transition-all duration-300 hover:shadow-lg gap-3"
           >
             <FileText className="w-5 h-5" />
-            Generar Informe PDF para el Banco
+            Generate PDF Report for Bank
             <Download className="w-4 h-4" />
           </Button>
         </div>
         <p className="text-center text-sm text-muted-foreground mt-4">
-          Incluye análisis completo, proyecciones y documentación para solicitar financiación
+          Includes complete analysis, projections and documentation to request financing
         </p>
       </div>
     </section>

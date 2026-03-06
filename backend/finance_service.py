@@ -39,42 +39,42 @@ SEED_TRANSACTIONS = [
     {
         "id": "seed-1",
         "date": "2026-01-01",
-        "category": "Nómina",
-        "concept": "Nómina Enero",
+        "category": "Salary",
+        "concept": "January Salary",
         "amount": 2500.0,
-        "account": "Trabajo"
+        "account": "Work"
     },
     {
         "id": "seed-2",
         "date": "2026-01-02",
-        "category": "Vivienda",
-        "concept": "Hipoteca/Alquiler",
+        "category": "Housing",
+        "concept": "Mortgage/Rent",
         "amount": -850.0,
-        "account": "Vivienda"
+        "account": "Housing"
     },
     {
         "id": "seed-3",
         "date": "2026-01-03",
-        "category": "Alimentación",
-        "concept": "Supermercado",
+        "category": "Food",
+        "concept": "Groceries",
         "amount": -150.0,
-        "account": "Alimentación"
+        "account": "Food"
     },
     {
         "id": "seed-4",
         "date": "2026-01-05",
-        "category": "Ocio/Restaurantes",
-        "concept": "Restaurante Sniper",
+        "category": "Leisure/Restaurants",
+        "concept": "Sniper Restaurant",
         "amount": -60.0,
-        "account": "Ocio"
+        "account": "Leisure"
     },
     {
         "id": "seed-5",
         "date": "2026-01-10",
-        "category": "Inversiones",
-        "concept": "Dividendos",
+        "category": "Investments",
+        "concept": "Dividends",
         "amount": 120.0,
-        "account": "Inversiones"
+        "account": "Investments"
     }
 ]
 

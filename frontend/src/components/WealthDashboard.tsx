@@ -46,7 +46,7 @@ export default function WealthDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
-              +{summary.total_income.toLocaleString('es-ES')}€
+              +{summary.total_income.toLocaleString('en-US')}€
             </div>
           </CardContent>
         </Card>
@@ -57,7 +57,7 @@ export default function WealthDashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">
-              {summary.total_expenses.toLocaleString('es-ES')}€
+              {summary.total_expenses.toLocaleString('en-US')}€
             </div>
           </CardContent>
         </Card>
@@ -109,8 +109,8 @@ export default function WealthDashboard() {
                     backgroundColor: 'rgba(255, 255, 255, 0.95)'
                   }}
                 />
-                <Bar dataKey="ingresos" name="Ingresos" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={50} />
-                <Bar dataKey="gastos" name="Gastos" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={50} />
+                <Bar dataKey="ingresos" name={t.dashboard.totalIncome} fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={50} />
+                <Bar dataKey="gastos" name={t.dashboard.totalExpenses} fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={50} />
               </BarChart>
             </ResponsiveContainer>
           </div>

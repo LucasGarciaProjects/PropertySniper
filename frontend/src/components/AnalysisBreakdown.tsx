@@ -1,26 +1,28 @@
 import { useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle2, AlertCircle, ChevronDown, ChevronUp, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
 import type { ExtractionLog } from "@/services/api";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface AnalysisBreakdownProps {
   extractionLog: ExtractionLog;
 }
 
 const AnalysisBreakdown = ({ extractionLog }: AnalysisBreakdownProps) => {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
 
   const fieldLabels: Record<string, string> = {
-    precio: "Precio de Venta",
-    metros_cuadrados: "Metros Cuadrados",
-    habitaciones: "Habitaciones",
-    planta: "Planta",
-    estado: "Estado",
-    ubicacion: "Ubicación",
-    tiene_ascensor: "Ascensor",
+    precio: t.sniper.multiInput.results.fields.price,
+    metros_cuadrados: t.sniper.multiInput.results.fields.m2,
+    habitaciones: t.sniper.multiInput.results.fields.rooms,
+    planta: t.sniper.multiInput.results.fields.floor,
+    estado: t.sniper.multiInput.results.fields.status,
+    ubicacion: t.sniper.multiInput.results.fields.location,
+    tiene_ascensor: t.sniper.multiInput.results.fields.elevator,
   };
 
   return (
@@ -29,7 +31,7 @@ const AnalysisBreakdown = ({ extractionLog }: AnalysisBreakdownProps) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Brain className="w-5 h-5 text-accent" />
-            <CardTitle>Auditoría de IA</CardTitle>
+            <CardTitle>{t.sniper.multiInput.results.audit.title}</CardTitle>
           </div>
           <Button
             variant="ghost"
@@ -40,18 +42,18 @@ const AnalysisBreakdown = ({ extractionLog }: AnalysisBreakdownProps) => {
             {isOpen ? (
               <>
                 <ChevronUp className="w-4 h-4" />
-                Ocultar detalle
+                {t.sniper.multiInput.results.audit.hide}
               </>
             ) : (
               <>
                 <ChevronDown className="w-4 h-4" />
-                Ver detalle del análisis técnico
+                {t.sniper.multiInput.results.audit.show}
               </>
             )}
           </Button>
         </div>
         <CardDescription>
-          Detalle de cómo la IA ha extraído y procesado los datos del anuncio
+          {t.sniper.multiInput.results.audit.description}
         </CardDescription>
       </CardHeader>
 
@@ -63,14 +65,14 @@ const AnalysisBreakdown = ({ extractionLog }: AnalysisBreakdownProps) => {
               <>
                 <CheckCircle2 className="w-5 h-5 text-green-500" />
                 <span className="font-semibold text-green-700 dark:text-green-400">
-                  Análisis completo: Todos los datos críticos encontrados
+                  {t.sniper.multiInput.results.audit.complete}
                 </span>
               </>
             ) : (
               <>
                 <AlertCircle className="w-5 h-5 text-orange-500" />
                 <span className="font-semibold text-orange-700 dark:text-orange-400">
-                  Análisis incompleto: Faltan datos críticos
+                  {t.sniper.multiInput.results.audit.incomplete}
                 </span>
               </>
             )}
@@ -80,7 +82,7 @@ const AnalysisBreakdown = ({ extractionLog }: AnalysisBreakdownProps) => {
           <div className="space-y-3">
             <h3 className="font-semibold text-sm text-foreground flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-green-500" />
-              Campos encontrados directamente en el texto
+              {t.sniper.multiInput.results.audit.found}
             </h3>
             <div className="flex flex-wrap gap-2">
               {extractionLog.found_fields.length > 0 ? (
@@ -96,7 +98,7 @@ const AnalysisBreakdown = ({ extractionLog }: AnalysisBreakdownProps) => {
                 ))
               ) : (
                 <span className="text-sm text-muted-foreground">
-                  No se encontraron campos directamente en el texto
+                  {t.sniper.multiInput.results.audit.notFound}
                 </span>
               )}
             </div>
@@ -107,7 +109,7 @@ const AnalysisBreakdown = ({ extractionLog }: AnalysisBreakdownProps) => {
             <div className="space-y-3">
               <h3 className="font-semibold text-sm text-foreground flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-orange-500" />
-                Campos estimados o asumidos
+                {t.sniper.multiInput.results.audit.estimated}
               </h3>
               <div className="flex flex-wrap gap-2">
                 {extractionLog.missing_fields.map((field) => (
@@ -129,7 +131,7 @@ const AnalysisBreakdown = ({ extractionLog }: AnalysisBreakdownProps) => {
             <div className="space-y-3">
               <h3 className="font-semibold text-sm text-foreground flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-red-500" />
-                Avisos Importantes
+                {t.sniper.multiInput.results.audit.warnings}
               </h3>
               <div className="space-y-2">
                 {extractionLog.warnings.map((warning, index) => (
@@ -148,13 +150,13 @@ const AnalysisBreakdown = ({ extractionLog }: AnalysisBreakdownProps) => {
           <div className="space-y-3">
             <h3 className="font-semibold text-sm text-foreground flex items-center gap-2">
               <Brain className="w-4 h-4 text-accent" />
-              Razonamiento de la IA
+              {t.sniper.multiInput.results.audit.reasoning}
             </h3>
             <Textarea
               value={extractionLog.reasoning}
               readOnly
               className="min-h-[120px] bg-muted/50 text-sm resize-none"
-              placeholder="El razonamiento de la IA aparecerá aquí..."
+              placeholder={t.sniper.multiInput.results.audit.reasoningPlaceholder}
             />
           </div>
         </CardContent>

@@ -37,7 +37,7 @@ export default function SniperSection() {
     if (response.extraction_log) {
       setExtractionLog(response.extraction_log);
       if (!response.extraction_log.is_complete) {
-        toast.error(response.error || "Análisis incompleto: faltan datos críticos", { duration: 5000 });
+        toast.error(response.error || "Incomplete analysis: critical data missing", { duration: 5000 });
         setShowResults(false);
         return;
       }
@@ -46,7 +46,7 @@ export default function SniperSection() {
     }
 
     if (!response.success || !response.analysis) {
-      throw new Error(response.error || "Error al analizar la propiedad");
+      throw new Error(response.error || "Error analyzing property");
     }
 
     const analysis = response.analysis;
@@ -137,8 +137,8 @@ export default function SniperSection() {
       const response = await analyzeProperty(url);
       processAnalysisResponse(response);
     } catch (error) {
-      console.error("Error al analizar:", error);
-      const errorMessage = error instanceof Error ? error.message : "Error desconocido";
+      console.error("Error analyzing:", error);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
       toast.error(errorMessage, { duration: 5000 });
       setShowResults(false);
     } finally {
@@ -161,8 +161,8 @@ export default function SniperSection() {
       const response = await analyzeFromText(text);
       processAnalysisResponse(response);
     } catch (error) {
-      console.error("Error al analizar texto:", error);
-      const errorMessage = error instanceof Error ? error.message : "Error desconocido";
+      console.error("Error analyzing text:", error);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
       toast.error(errorMessage, { duration: 5000 });
       setShowResults(false);
     } finally {
@@ -194,8 +194,8 @@ export default function SniperSection() {
       const response = await analyzeManual(data);
       processAnalysisResponse(response);
     } catch (error) {
-      console.error("Error al analizar manual:", error);
-      const errorMessage = error instanceof Error ? error.message : "Error desconocido";
+      console.error("Error analyzing manual:", error);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
       toast.error(errorMessage, { duration: 5000 });
       setShowResults(false);
     } finally {
@@ -209,61 +209,53 @@ export default function SniperSection() {
 
   const generateNegotiationScript = (analysis: RentabilityAnalysis) => {
     const descuento = ((analysis.precio_compra - analysis.omr) / analysis.precio_compra * 100).toFixed(1);
-    const ubicacion = analysis.property_data.ubicacion || "la propiedad";
-    const estado = analysis.property_data.estado || "bueno";
-    const necesitaReforma = estado.toLowerCase().includes("reformar");
+    const ubicacion = analysis.property_data.ubicacion || "the property";
+    const estado = analysis.property_data.estado || "good";
+    const necesitaReforma = estado.toLowerCase().includes("reform") || estado.toLowerCase().includes("fix");
 
-    const script = `Buenos días, me interesa ${ubicacion}.
-
-He analizado la propiedad y he detectado que el precio actual está un ${descuento}% por encima de lo que considero adecuado para una inversión rentable.
-
-${necesitaReforma ? `Además, he visto que necesita reforma (estimado: ${analysis.coste_reforma.toLocaleString('es-ES')}€).` : ""}
-
-Tengo la financiación aprobada y puedo cerrar la operación esta semana si llegamos a un acuerdo en ${analysis.omr.toLocaleString('es-ES')}€.
-
-¿Tendría disponibilidad para visitarlo mañana?`;
+    const script = `Good morning, I am interested in ${ubicacion}.
+    I have analyzed the property and detected that the current price is ${descuento}% above what I consider appropriate for a profitable investment.
+    ${necesitaReforma ? `Also, I noticed it needs renovation (estimated: ${analysis.coste_reforma.toLocaleString('en-US')}€).` : ""}
+    I have approved financing and can close the deal this week if we agree on ${analysis.omr.toLocaleString('en-US')}€.
+    Would you be available for a visit tomorrow?`;
 
     setNegotiationScript(script);
 
     const debiles: string[] = [];
-    if (analysis.rentabilidad_neta < 5) debiles.push("Rentabilidad baja");
-    if (analysis.rentabilidad_neta < 7) debiles.push("Por debajo del objetivo del 8%");
-    if (necesitaReforma) debiles.push("Necesita reforma");
-    if (analysis.precio_compra > analysis.omr * 1.1) debiles.push("Precio sobre valor de mercado");
-    if (analysis.property_data.planta && analysis.property_data.planta.toLowerCase().includes("baja")) debiles.push("Planta baja");
+    if (analysis.rentabilidad_neta < 5) debiles.push("Low yield");
+    if (analysis.rentabilidad_neta < 7) debiles.push("Below 8% goal");
+    if (necesitaReforma) debiles.push("Needs renovation");
+    if (analysis.precio_compra > analysis.omr * 1.1) debiles.push("Price above market value");
+    if (analysis.property_data.planta && (analysis.property_data.planta.toLowerCase().includes("baja") || analysis.property_data.planta.toLowerCase().includes("ground"))) debiles.push("Ground floor");
 
-    setPuntosDebiles(debiles.length > 0 ? debiles : ["Análisis en curso"]);
+    setPuntosDebiles(debiles.length > 0 ? debiles : ["Analysis in progress"]);
   };
 
   const generateNegotiationScriptFromData = (data: AnalysisData) => {
     const descuento = ((data.precioOriginal - data.ofertaMaxima) / data.precioOriginal * 100).toFixed(1);
-    const ubicacion = data.ubicacion || "la propiedad";
+    const ubicacion = data.ubicacion || "the property";
     const necesitaReforma = data.costeReforma > 1000;
 
-    const script = `Buenos días, me interesa ${ubicacion}.
-
-He analizado la propiedad y he detectado que el precio actual está un ${descuento}% por encima de lo que considero adecuado para una inversión rentable.
-
-${necesitaReforma ? `Además, he visto que necesita reforma (estimado: ${Math.round(data.costeReforma).toLocaleString('es-ES')}€).` : ""}
-
-Tengo la financiación aprobada y puedo cerrar la operación esta semana si llegamos a un acuerdo en ${Math.round(data.ofertaMaxima).toLocaleString('es-ES')}€.
-
-¿Tendría disponibilidad para visitarlo mañana?`;
+    const script = `Good morning, I am interested in ${ubicacion}.
+    I have analyzed the property and detected that the current price is ${descuento}% above what I consider appropriate for a profitable investment.
+    ${necesitaReforma ? `Also, I noticed it needs renovation (estimated: ${Math.round(data.costeReforma).toLocaleString('en-US')}€).` : ""}
+    I have approved financing and can close the deal this week if we agree on ${Math.round(data.ofertaMaxima).toLocaleString('en-US')}€.
+    Would you be available for a visit tomorrow?`;
 
     setNegotiationScript(script);
 
     const debiles: string[] = [];
-    if (data.rentabilidadNeta < 5) debiles.push("Rentabilidad baja");
-    if (data.rentabilidadNeta < 7) debiles.push("Por debajo del objetivo del 8%");
-    if (necesitaReforma) debiles.push("Necesita reforma");
-    if (data.precioOriginal > data.ofertaMaxima * 1.1) debiles.push("Precio sobre valor de mercado");
+    if (data.rentabilidadNeta < 5) debiles.push("Low yield");
+    if (data.rentabilidadNeta < 7) debiles.push("Below 8% goal");
+    if (necesitaReforma) debiles.push("Needs renovation");
+    if (data.precioOriginal > data.ofertaMaxima * 1.1) debiles.push("Price above market value");
 
-    setPuntosDebiles(debiles.length > 0 ? debiles : ["Análisis en curso"]);
+    setPuntosDebiles(debiles.length > 0 ? debiles : ["Analysis in progress"]);
   };
 
   const handleDownloadPDF = async () => {
     if (!analysisData || alquilerMensual === null) {
-      toast.error("No hay datos disponibles para generar el PDF");
+      toast.error("No data available to generate PDF");
       return;
     }
 
@@ -280,27 +272,27 @@ Tengo la financiación aprobada y puedo cerrar la operación esta semana si lleg
         extraction_log: extractionLog || undefined,
       });
 
-      if (!response) throw new Error("No se recibió respuesta del servidor");
+      if (!response) throw new Error("No response from server");
 
       if (response.success && response.pdf_path) {
-        const filename = response.pdf_path.split("/").pop() || response.pdf_path.split("\\").pop() || "analisis.pdf";
+        const filename = response.pdf_path.split("/").pop() || response.pdf_path.split("\\").pop() || "analysis.pdf";
         setPdfPath(response.pdf_path);
         await downloadPDF(filename);
         toast.success(t.sniper.downloadPdf);
       } else if (response.success && !response.pdf_path) {
         if (pdfPath) {
-          const filename = pdfPath.split("/").pop() || pdfPath.split("\\").pop() || "analisis.pdf";
+          const filename = pdfPath.split("/").pop() || pdfPath.split("\\").pop() || "analysis.pdf";
           await downloadPDF(filename);
           toast.success(t.sniper.downloadPdf);
         } else {
-          throw new Error("El servidor no generó el PDF y no hay PDF anterior disponible");
+          throw new Error("Server did not generate PDF and no previous PDF available");
         }
       } else {
-        throw new Error(response.error || "Error al generar el PDF en el servidor");
+        throw new Error(response.error || "Error generating PDF on server");
       }
     } catch (error) {
-      console.error("Error al generar/descargar PDF:", error);
-      const errorMessage = error instanceof Error ? error.message : "Error desconocido";
+      console.error("Error generating/downloading PDF:", error);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
       toast.error(`Error: ${errorMessage}`, { duration: 5000 });
     }
   };
@@ -309,8 +301,8 @@ Tengo la financiación aprobada y puedo cerrar la operación esta semana si lleg
     if (!analysisData) return;
     try {
       await saveAsset({
-        name: analysisData.ubicacion || "Propiedad Sniper",
-        type: "Inmueble",
+        name: analysisData.ubicacion || "Sniper Property",
+        type: "Real Estate",
         value: analysisData.ofertaMaxima,
         details: analysisData
       });

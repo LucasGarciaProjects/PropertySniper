@@ -30,38 +30,38 @@ class PDFGenerator:
         # --- 1. TÍTULO MINIMALISTA ---
         pdf.set_font("Arial", "B", 16)
         pdf.set_text_color(25, 25, 112) # Azul Medianoche
-        pdf.cell(0, 10, "INFORME DE INVERSIÓN - LIBERTAD SNIPER AI", ln=1, align="L")
+        pdf.cell(0, 10, "INVESTMENT REPORT - LIBERTY SNIPER AI", ln=1, align="L")
         
         pdf.set_font("Arial", "", 9)
         pdf.set_text_color(100, 100, 100)
-        pdf.cell(0, 5, self.safe_text(f"Emitido el {datetime.now().strftime('%d/%m/%Y')}"), ln=1, align="L")
+        pdf.cell(0, 5, self.safe_text(f"Issued on {datetime.now().strftime('%d/%m/%Y')}"), ln=1, align="L")
         pdf.ln(5)
 
         # --- 2. RESUMEN DE RENTABILIDAD ---
         pdf.set_font("Arial", "B", 12)
         pdf.set_text_color(0, 0, 0)
-        pdf.cell(0, 8, "RESUMEN EJECUTIVO", ln=1)
+        pdf.cell(0, 8, "EXECUTIVE SUMMARY", ln=1)
         
         # Fila de datos principales
         pdf.set_font("Arial", "B", 10)
-        pdf.cell(60, 8, self.safe_text(f"RENTABILIDAD NETA: {analysis.rentabilidad_neta:.2f}%"), border="B", ln=0)
-        pdf.cell(60, 8, self.safe_text(f"CASHFLOW: {analysis.beneficio_neto_anual/12:,.0f} EUR/mes"), border="B", ln=0)
-        pdf.cell(70, 8, self.safe_text(f"OMR (8%): {int(round(analysis.omr)):,} EUR"), border="B", ln=1)
+        pdf.cell(60, 8, self.safe_text(f"NET YIELD: {analysis.rentabilidad_neta:.2f}%"), border="B", ln=0)
+        pdf.cell(60, 8, self.safe_text(f"CASHFLOW: {analysis.beneficio_neto_anual/12:,.0f} EUR/month"), border="B", ln=0)
+        pdf.cell(70, 8, self.safe_text(f"MRO (8%): {int(round(analysis.omr)):,} EUR"), border="B", ln=1)
         pdf.ln(5)
 
         # --- 3. TABLA DE DATOS (Compacta) ---
         pdf.set_font("Arial", "B", 10)
         pdf.set_fill_color(245, 245, 245)
-        pdf.cell(190, 8, " DESGLOSE DE LA OPERACIÓN", ln=1, fill=True)
+        pdf.cell(190, 8, " OPERATION BREAKDOWN", ln=1, fill=True)
         
         pdf.set_font("Arial", "", 9)
         data = [
-            ("Precio de Venta", f"{analysis.precio_compra:,.0f} EUR"),
-            ("Inversión Total (ITP + Gastos + Reforma)", f"{analysis.inversion_total:,.0f} EUR"),
-            ("Alquiler Mensual Estimado", f"{analysis.alquiler_mensual:,.0f} EUR"),
-            ("Gastos Fijos Anuales (20%)", f"{analysis.gastos_fijos_anuales:,.0f} EUR"),
-            ("Beneficio Neto Anual", f"{analysis.beneficio_neto_anual:,.0f} EUR"),
-            ("Ubicación", analysis.property_data.ubicacion)
+            ("Sale Price", f"{analysis.precio_compra:,.0f} EUR"),
+            ("Total Investment (Tax + Exp. + Reno)", f"{analysis.inversion_total:,.0f} EUR"),
+            ("Estimated Monthly Rent", f"{analysis.alquiler_mensual:,.0f} EUR"),
+            ("Annual Fixed Expenses (20%)", f"{analysis.gastos_fijos_anuales:,.0f} EUR"),
+            ("Annual Net Profit", f"{analysis.beneficio_neto_anual:,.0f} EUR"),
+            ("Location", analysis.property_data.ubicacion)
         ]
         
         for label, val in data:
@@ -79,7 +79,7 @@ class PDFGenerator:
         pdf.set_xy(15, pdf.get_y() + 4)
         pdf.set_font("Arial", "B", 10)
         pdf.set_text_color(130, 90, 0)
-        pdf.cell(180, 5, "OFERTA MÁXIMA RECOMENDADA (OMR)", ln=1)
+        pdf.cell(180, 5, "MAXIMUM RECOMMENDED OFFER (MRO)", ln=1)
         pdf.set_font("Arial", "B", 14)
         pdf.set_text_color(184, 134, 11)
         pdf.set_x(15)
@@ -90,7 +90,7 @@ class PDFGenerator:
         if extraction_log:
             pdf.set_text_color(0, 0, 0)
             pdf.set_font("Arial", "B", 10)
-            pdf.cell(190, 8, " NOTAS DEL ANÁLISIS IA", ln=1, fill=True)
+            pdf.cell(190, 8, " AI ANALYSIS NOTES", ln=1, fill=True)
             pdf.set_font("Arial", "I", 8)
             pdf.multi_cell(190, 4, self.safe_text(extraction_log.reasoning))
             pdf.ln(5)
@@ -99,8 +99,8 @@ class PDFGenerator:
         pdf.set_font("Arial", "", 7)
         pdf.set_text_color(120, 120, 120)
         ratio = analysis.alquiler_mensual / analysis.property_data.m2 if analysis.property_data.m2 > 0 else 0
-        metodo = (f"Metodología: ITP(10%) + 3k EUR Gastos. Reforma: {analysis.coste_reforma:,.0f} EUR. "
-                  f"Alquiler: {ratio:.1f} EUR/m2. Gastos fijos: 20%. Objetivo ROI: 8%.")
+        metodo = (f"Methodology: ITP(10%) + 3k EUR Expenses. Renovation: {analysis.coste_reforma:,.0f} EUR. "
+                  f"Rent: {ratio:.1f} EUR/m2. Fixed expenses: 20%. Target ROI: 8%.")
         pdf.multi_cell(0, 4, self.safe_text(metodo), align="C")
 
         # Guardar archivo

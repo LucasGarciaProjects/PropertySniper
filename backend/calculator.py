@@ -82,9 +82,9 @@ class RentabilityCalculator:
         """
         estado_lower = estado.lower()
         
-        if 'reformar' in estado_lower:
+        if 'reformar' in estado_lower or 'reform' in estado_lower or 'fix' in estado_lower:
             return m2 * self.REFORMA_A_REFORMAR
-        elif 'bueno' in estado_lower or 'excelente' in estado_lower or 'nuevo' in estado_lower:
+        elif 'bueno' in estado_lower or 'good' in estado_lower or 'excelente' in estado_lower or 'excellent' in estado_lower or 'nuevo' in estado_lower or 'new' in estado_lower:
             return m2 * self.REFORMA_BUENO
         else:
             # Para estados intermedios, usar un promedio
@@ -132,11 +132,11 @@ class RentabilityCalculator:
         
         # Determinar semáforo
         if rentabilidad_neta >= self.RENTABILIDAD_VERDE * 100:
-            semaforo = "VERDE"
+            semaforo = "GREEN"
         elif rentabilidad_neta >= self.RENTABILIDAD_AMARILLO * 100:
-            semaforo = "AMARILLO"
+            semaforo = "YELLOW"
         else:
-            semaforo = "ROJO"
+            semaforo = "RED"
         
         # Calcular Oferta Máxima Recomendada (OMR)
         omr = self.calculate_omr(property_data)

@@ -163,6 +163,10 @@ export const translations = {
         placeholder: "Pregúntame sobre tus gastos, ahorros...",
         error: "Lo siento, tuve un problema al procesar tu consulta.",
     },
+    footer: {
+      copyright: "© 2026 Libertad Wealth App. Transformado por",
+      role: "Tu Senior Fullstack Engineer"
+    },
     categories: {
         income: ["Nómina", "Alquileres", "Inversiones", "Otros"],
         expense: ["Vivienda", "Alimentación", "Transporte", "Salud", "Ocio/Restaurantes", "Compras", "Suministros", "Otros"]
@@ -273,7 +277,7 @@ export const translations = {
                 },
                 auto: "Auto",
                 calculated: "Auto (calculated)",
-                estimated: "Auto (estimado)",
+                estimated: "Auto (estimated)",
                 analyze: "Analyze Property",
                 analyzing: "Analyzing..."
             },
@@ -330,6 +334,10 @@ export const translations = {
         greeting: "Hello, I am your personal financial advisor. I have analyzed your income and expenses. How can I help you today?",
         placeholder: "Ask me about your expenses, savings...",
         error: "Sorry, I had a problem processing your request.",
+    },
+    footer: {
+      copyright: "© 2026 Liberty Wealth App. Transformed by",
+      role: "Your Senior Fullstack Engineer"
     },
      categories: {
         income: ["Salary", "Rentals", "Investments", "Other"],

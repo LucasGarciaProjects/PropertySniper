@@ -38,7 +38,7 @@ const MultiInput = ({ onAnalyzeText, onAnalyzeManual, onAnalyzeImage, isLoading 
   const [costeReforma, setCosteReforma] = useState([0]);
   const [alquilerMensual, setAlquilerMensual] = useState([0]);
   const [planta, setPlanta] = useState("");
-  const [estado, setEstado] = useState("bueno");
+  const [estado, setEstado] = useState("good");
   const [ubicacion, setUbicacion] = useState("");
 
   const handleTextSubmit = (e: React.FormEvent) => {
@@ -242,7 +242,7 @@ const MultiInput = ({ onAnalyzeText, onAnalyzeManual, onAnalyzeImage, isLoading 
                       <div className="flex justify-between items-center">
                         <Label className="text-base font-semibold">{t.sniper.multiInput.manualTab.labels.price}</Label>
                         <span className="text-2xl font-bold text-accent">
-                          {precio[0].toLocaleString('es-ES')} €
+                          {precio[0].toLocaleString('en-US')} €
                         </span>
                       </div>
                       <Slider
@@ -304,7 +304,7 @@ const MultiInput = ({ onAnalyzeText, onAnalyzeManual, onAnalyzeImage, isLoading 
                       <div className="flex justify-between items-center">
                         <Label className="text-base font-semibold">{t.sniper.multiInput.manualTab.labels.reform}</Label>
                         <span className="text-xl font-bold text-accent">
-                          {costeReforma[0] > 0 ? costeReforma[0].toLocaleString('es-ES') + ' €' : t.sniper.multiInput.manualTab.auto}
+                          {costeReforma[0] > 0 ? costeReforma[0].toLocaleString('en-US') + ' €' : t.sniper.multiInput.manualTab.auto}
                         </span>
                       </div>
                       <Slider
@@ -326,7 +326,7 @@ const MultiInput = ({ onAnalyzeText, onAnalyzeManual, onAnalyzeImage, isLoading 
                       <div className="flex justify-between items-center">
                         <Label className="text-base font-semibold">{t.sniper.multiInput.manualTab.labels.rent}</Label>
                         <span className="text-xl font-bold text-accent">
-                          {alquilerMensual[0] > 0 ? alquilerMensual[0].toLocaleString('es-ES') + ' €' : t.sniper.multiInput.manualTab.auto}
+                          {alquilerMensual[0] > 0 ? alquilerMensual[0].toLocaleString('en-US') + ' €' : t.sniper.multiInput.manualTab.auto}
                         </span>
                       </div>
                       <Slider
@@ -360,9 +360,9 @@ const MultiInput = ({ onAnalyzeText, onAnalyzeManual, onAnalyzeImage, isLoading 
                           onChange={(e) => setEstado(e.target.value)}
                           className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
                         >
-                          <option value="bueno">{t.sniper.multiInput.manualTab.options.good}</option>
-                          <option value="a reformar">{t.sniper.multiInput.manualTab.options.reform}</option>
-                          <option value="excelente">{t.sniper.multiInput.manualTab.options.excellent}</option>
+                          <option value="good">{t.sniper.multiInput.manualTab.options.good}</option>
+                          <option value="reform">{t.sniper.multiInput.manualTab.options.reform}</option>
+                          <option value="excellent">{t.sniper.multiInput.manualTab.options.excellent}</option>
                           <option value="regular">{t.sniper.multiInput.manualTab.options.regular}</option>
                         </select>
                       </div>

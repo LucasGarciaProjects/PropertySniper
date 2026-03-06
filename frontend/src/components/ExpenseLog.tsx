@@ -33,7 +33,7 @@ export default function ExpenseLog() {
       const data = await getTransactions();
       setTransactions(data);
     } catch (error) {
-      toast.error("Error al cargar transacciones");
+      toast.error("Error loading transactions");
     } finally {
       setLoading(false);
     }
@@ -55,13 +55,13 @@ export default function ExpenseLog() {
         account,
       });
       setTransactions([newTx, ...transactions]);
-      toast.success("Movimiento añadido");
+      toast.success("Transaction added");
       // Reset form (keep date and type)
       setConcept("");
       setAmount("");
       setCategory("");
     } catch (error) {
-      toast.error("Error al guardar");
+      toast.error("Error saving");
     }
   };
 
@@ -108,7 +108,7 @@ export default function ExpenseLog() {
 
             <div className="space-y-2 md:col-span-1">
               <label className="text-sm font-medium">{t.log.concept}</label>
-              <Input value={concept} onChange={e => setConcept(e.target.value)} placeholder="Ej: Cena" required />
+              <Input value={concept} onChange={e => setConcept(e.target.value)} placeholder="Ex: Dinner" required />
             </div>
 
             <div className="space-y-2">
@@ -155,7 +155,7 @@ export default function ExpenseLog() {
                   </TableCell>
                   <TableCell className="text-muted-foreground">{tx.account}</TableCell>
                   <TableCell className={`text-right font-bold ${tx.amount > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {tx.amount > 0 ? '+' : ''}{tx.amount.toLocaleString('es-ES')}€
+                    {tx.amount > 0 ? '+' : ''}{tx.amount.toLocaleString('en-US')}€
                   </TableCell>
                 </TableRow>
               ))}

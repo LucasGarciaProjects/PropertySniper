@@ -127,10 +127,10 @@ class PropertyScraper:
         """Extrae el estado del inmueble."""
         text_lower = text.lower()
         
-        if any(word in text_lower for word in ['a reformar', 'reformar', 'necesita reforma', 'rehabilitar']):
-            return 'a reformar'
-        elif any(word in text_lower for word in ['buen estado', 'bueno', 'excelente', 'nuevo']):
-            return 'bueno'
+        if any(word in text_lower for word in ['a reformar', 'reformar', 'necesita reforma', 'rehabilitar', 'to reform', 'needs renovation']):
+            return 'reform'
+        elif any(word in text_lower for word in ['buen estado', 'bueno', 'excelente', 'nuevo', 'good', 'excellent', 'new']):
+            return 'good'
         elif any(word in text_lower for word in ['regular', 'aceptable']):
             return 'regular'
         return None
@@ -186,7 +186,7 @@ class PropertyScraper:
             'headers': {
                 'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1',
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.9',
                 'Accept-Encoding': 'gzip, deflate, br',
                 'Connection': 'keep-alive',
                 'Upgrade-Insecure-Requests': '1',
@@ -195,16 +195,16 @@ class PropertyScraper:
                 'schema': {
                     'type': 'object',
                     'properties': {
-                        'precio': {'type': 'number', 'description': 'Precio de venta en euros'},
-                        'metros_cuadrados': {'type': 'number', 'description': 'Superficie en metros cuadrados'},
-                        'habitaciones': {'type': 'number', 'description': 'Número de habitaciones'},
-                        'planta': {'type': 'string', 'description': 'Planta del inmueble'},
-                        'estado': {'type': 'string', 'description': 'Estado del inmueble (a reformar, bueno, etc.)'},
-                        'ubicacion': {'type': 'string', 'description': 'Ubicación completa del inmueble'},
+                        'precio': {'type': 'number', 'description': 'Sale price in euros'},
+                        'metros_cuadrados': {'type': 'number', 'description': 'Surface area in square meters'},
+                        'habitaciones': {'type': 'number', 'description': 'Number of rooms'},
+                        'planta': {'type': 'string', 'description': 'Floor number/level'},
+                        'estado': {'type': 'string', 'description': 'Property condition (reform, good, new, etc.)'},
+                        'ubicacion': {'type': 'string', 'description': 'Full location of the property'},
                     },
                     'required': ['precio', 'metros_cuadrados']
                 },
-                'systemPrompt': 'Eres un asistente que extrae datos de inmuebles de Idealista o Fotocasa. Si la página muestra un captcha, bloqueo, o mensaje de error, responde únicamente con la palabra "BLOQUEO" en el campo precio. Extrae solo datos reales de la propiedad.'
+                'systemPrompt': 'You are an assistant that extracts real estate data from Idealista or Fotocasa. If the page shows a captcha, block, or error message, respond ONLY with the word "BLOCK" in the price field. Extract only real property data.'
             }
         }
         
@@ -226,15 +226,15 @@ class PropertyScraper:
                     extracted = result.get('extract', {})
                     
                     # Verificar si el LLM detectó bloqueo
-                    if isinstance(extracted, dict) and extracted.get('precio') == 'BLOQUEO':
-                        raise Exception("Bloqueo detectado por el sistema de extracción")
+                    if isinstance(extracted, dict) and (extracted.get('precio') == 'BLOQUEO' or extracted.get('precio') == 'BLOCK'):
+                        raise Exception("Block detected by extraction system")
                     
                     # Verificar captcha en el contenido
                     if 'captcha' in content.lower() or 'blocked' in content.lower():
                         if attempt < max_retries - 1:
                             time.sleep(2)  # Esperar 2 segundos antes del siguiente intento
                             continue
-                        raise Exception("Idealista está mostrando un captcha o bloqueo después de múltiples intentos")
+                        raise Exception("Idealista is showing a captcha or block after multiple attempts")
                 
                 return result
                 
@@ -246,9 +246,9 @@ class PropertyScraper:
                     time.sleep(wait_time)
                     continue
                 else:
-                    raise Exception(f"Error después de {max_retries} intentos: {str(e)}")
+                    raise Exception(f"Error after {max_retries} attempts: {str(e)}")
         
-        raise Exception(f"No se pudo scrapear después de {max_retries} intentos. Último error: {str(last_error)}")
+        raise Exception(f"Could not scrape after {max_retries} attempts. Last error: {str(last_error)}")
     
     async def scrape_property(self, url: str) -> PropertyData:
         """
@@ -273,7 +273,7 @@ class PropertyScraper:
                     m2_llm = extracted_data.get('metros_cuadrados')
                     
                     # Validar que no sea bloqueo
-                    if precio_llm != 'BLOQUEO' and precio_llm is not None:
+                    if precio_llm != 'BLOQUEO' and precio_llm != 'BLOCK' and precio_llm is not None:
                         # Usar datos del LLM si están disponibles
                         precio = float(precio_llm) if precio_llm else None
                         m2 = float(m2_llm) if m2_llm else None
@@ -282,6 +282,14 @@ class PropertyScraper:
                         estado = extracted_data.get('estado')
                         ubicacion = extracted_data.get('ubicacion')
                         
+                        # Normalizar estado del LLM si es necesario
+                        if estado:
+                            estado_lower = str(estado).lower()
+                            if any(w in estado_lower for w in ['reformar', 'reform', 'reforma']):
+                                estado = 'reform'
+                            elif any(w in estado_lower for w in ['bueno', 'good', 'nuevo', 'new', 'excelente']):
+                                estado = 'good'
+                        
                         # Si tenemos precio y m2 del LLM, usarlos
                         if precio and m2:
                             return PropertyData(
@@ -289,8 +297,8 @@ class PropertyScraper:
                                 m2=m2,
                                 habitaciones=int(habitaciones) if habitaciones else None,
                                 planta=planta,
-                                estado=estado or 'bueno',
-                                ubicacion=ubicacion or self.extract_ubicacion("", url) or 'No especificada',
+                                estado=estado or 'good',
+                                ubicacion=ubicacion or self.extract_ubicacion("", url) or 'Not specified',
                                 url_origen=url
                             )
                 
@@ -313,7 +321,7 @@ class PropertyScraper:
             
             # Verificar si hay captcha o bloqueo
             if 'captcha' in content.lower() or 'captcha' in html_content.lower() or 'blocked' in content.lower():
-                raise Exception("Idealista está mostrando un captcha o bloqueo. Esto puede deberse a protección anti-bot. Intenta con una URL diferente o espera unos minutos.")
+                raise Exception("Idealista is showing a captcha or block. This may be due to anti-bot protection. Try a different URL or wait a few minutes.")
             
             # Si tenemos HTML, extraer texto limpio de él
             if html_content and not content:
@@ -327,7 +335,7 @@ class PropertyScraper:
             
             # Si el contenido es muy corto o parece vacío, puede ser un problema
             if len(full_content.strip()) < 100:
-                raise Exception(f"El contenido obtenido es muy corto ({len(full_content)} caracteres). Puede que la página no se haya cargado correctamente o esté bloqueada.")
+                raise Exception(f"Content retrieved is too short ({len(full_content)} chars). The page might not have loaded correctly or is blocked.")
             
             # Extraer datos usando métodos tradicionales (fallback)
             precio = self.extract_price(full_content)
@@ -339,18 +347,18 @@ class PropertyScraper:
             
             # Validar que tenemos al menos precio y m2
             if not precio or not m2:
-                raise ValueError(f"No se pudieron extraer datos esenciales. Precio: {precio}, m2: {m2}")
+                raise ValueError(f"Could not extract essential data. Price: {precio}, m2: {m2}")
             
             return PropertyData(
                 precio=precio,
                 m2=m2,
                 habitaciones=habitaciones,
                 planta=planta,
-                estado=estado or 'bueno',  # Por defecto 'bueno' si no se encuentra
-                ubicacion=ubicacion or 'No especificada',
+                estado=estado or 'good',  # Por defecto 'good' si no se encuentra
+                ubicacion=ubicacion or 'Not specified',
                 url_origen=url
             )
             
         except Exception as e:
-            raise Exception(f"Error al scrapear la propiedad: {str(e)}")
+            raise Exception(f"Error scraping property: {str(e)}")
 

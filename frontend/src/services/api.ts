@@ -73,7 +73,7 @@ export async function analyzeProperty(url: string): Promise<AnalysisResponse> {
     if (error instanceof Error) {
       throw error;
     }
-    throw new Error('Error desconocido al analizar la propiedad');
+    throw new Error('Unknown error analyzing property');
   }
 }
 
@@ -85,7 +85,7 @@ export async function downloadPDF(filename: string): Promise<void> {
     const response = await fetch(`${API_URL}/download/${filename}`);
     
     if (!response.ok) {
-      throw new Error(`Error al descargar el PDF: ${response.status}`);
+      throw new Error(`Error downloading PDF: ${response.status}`);
     }
 
     const blob = await response.blob();
@@ -101,7 +101,7 @@ export async function downloadPDF(filename: string): Promise<void> {
     if (error instanceof Error) {
       throw error;
     }
-    throw new Error('Error desconocido al descargar el PDF');
+    throw new Error('Unknown error downloading PDF');
   }
 }
 
@@ -120,7 +120,7 @@ export async function analyzeFromText(text: string): Promise<AnalysisResponse> {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error || `Error HTTP: ${response.status}`);
+      throw new Error(errorData.error || `HTTP Error: ${response.status}`);
     }
 
     const data: AnalysisResponse = await response.json();
@@ -129,7 +129,7 @@ export async function analyzeFromText(text: string): Promise<AnalysisResponse> {
     if (error instanceof Error) {
       throw error;
     }
-    throw new Error('Error desconocido al analizar el texto');
+    throw new Error('Unknown error analyzing text');
   }
 }
 
@@ -157,7 +157,7 @@ export async function analyzeManual(data: {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error || `Error HTTP: ${response.status}`);
+      throw new Error(errorData.error || `HTTP Error: ${response.status}`);
     }
 
     const data_response: AnalysisResponse = await response.json();
@@ -166,7 +166,7 @@ export async function analyzeManual(data: {
     if (error instanceof Error) {
       throw error;
     }
-    throw new Error('Error desconocido al analizar los datos manuales');
+    throw new Error('Unknown error analyzing manual data');
   }
 }
 
@@ -193,7 +193,7 @@ export async function recalculateAnalysis(data: {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error || `Error HTTP: ${response.status}`);
+      throw new Error(errorData.error || `HTTP Error: ${response.status}`);
     }
 
     const data_response: AnalysisResponse = await response.json();
@@ -202,7 +202,7 @@ export async function recalculateAnalysis(data: {
     if (error instanceof Error) {
       throw error;
     }
-    throw new Error('Error desconocido al recalcular el análisis');
+    throw new Error('Unknown error recalculating analysis');
   }
 }
 
@@ -213,11 +213,11 @@ export async function healthCheck(): Promise<{ status: string }> {
   try {
     const response = await fetch(`${API_URL}/health`);
     if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
+      throw new Error(`HTTP Error: ${response.status}`);
     }
     return await response.json();
   } catch (error) {
-    throw new Error('El backend no está disponible');
+    throw new Error('Backend is not available');
   }
 }
 

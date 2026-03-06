@@ -72,7 +72,7 @@ const Index = () => {
       <footer className="w-full py-8 px-4 border-t border-border mt-12">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-sm text-muted-foreground">
-            © 2026 Libertad Wealth App. Transformado por <span className="font-medium text-foreground">Tu Senior Fullstack Engineer</span>.
+            {t.footer.copyright} <span className="font-medium text-foreground">{t.footer.role}</span>.
           </p>
         </div>
       </footer>
