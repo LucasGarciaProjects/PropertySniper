@@ -114,36 +114,37 @@ Features:
 
 # 📂 Project Structure
 
+```
 sniper-inmobiliario/
-├── backend/                   # Servidor API
-│   ├── main.py               # Punto de entrada y endpoints API
-│   ├── finance_service.py    # Lógica de gestión financiera (NUEVO)
-│   ├── scraper.py            # Lógica de scraping inmobiliario
-│   ├── calculator.py         # Cálculos de rentabilidad
-│   ├── models.py             # Modelos de datos Pydantic
-│   ├── llm_extractor.py      # Extracción de datos con IA
-│   └── reports/              # PDFs generados
+├── backend/ # API Server
+│ ├── main.py # Entry point and API endpoints
+│ ├── finance_service.py # Financial management logic
+│ ├── scraper.py # Real estate scraping logic
+│ ├── calculator.py # Investment profitability calculations
+│ ├── models.py # Pydantic data models
+│ ├── llm_extractor.py # AI-based data extraction
+│ └── reports/ # Generated PDF reports
 │
-├── frontend/                  # Cliente Web
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── WealthDashboard.tsx  # Componente Dashboard (NUEVO)
-│   │   │   ├── ExpenseLog.tsx       # Componente Registro (NUEVO)
-│   │   │   ├── SniperSection.tsx    # Componente Sniper (NUEVO)
-│   │   │   ├── AICoach.tsx          # Componente Chat IA (NUEVO)
-│   │   │   └── ...
-│   │   ├── pages/
-│   │   │   └── Index.tsx            # Página principal con Tabs
-│   │   └── services/
-│   │       └── api.ts               # Cliente HTTP para conectar con Backend
+├── frontend/ # Web client
+│ ├── src/
+│ │ ├── components/
+│ │ │ ├── WealthDashboard.tsx
+│ │ │ ├── ExpenseLog.tsx
+│ │ │ ├── SniperSection.tsx
+│ │ │ ├── AICoach.tsx
+│ │ │ └── ...
+│ │ ├── pages/
+│ │ │ └── Index.tsx
+│ │ └── services/
+│ │ └── api.ts
 │
-├── data/                      # Base de Datos Local (JSON)
-│   ├── transactions.json     # Historial de ingresos/gastos
-│   └── assets.json           # Activos inmobiliarios guardados
+├── data/ # Local JSON database
+│ ├── transactions.json # Income/expense history
+│ └── assets.json # Saved real estate assets
 │
-└── PROJECT_OVERVIEW.md        # Este archivo
+└── README.md
+```
 
----
 
 # 🛠 Running the Project
 
